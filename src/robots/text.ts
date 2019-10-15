@@ -1,4 +1,5 @@
 import * as algorithmia from 'algorithmia';
+import * as sbd from 'sbd';
 
 import { algorithmiaKey as ALGORITHMIA_KEY } from '../../config.json';
 
@@ -36,10 +37,21 @@ const textRobot = async ({ searchTerm }: TextRobotParams) => {
     return withoutDatesInParentheses;
   };
 
+  const breakContentInSentences = (content: string) => {
+    const sentences: string[] = sbd.sentences(content);
+
+    return sentences.map(sentence => ({
+      text: sentence,
+      keywords: [],
+      images: [],
+    }));
+  };
+
   const content = await fetchContentFromWikipedia(searchTerm);
   const sanitizedContent = sanitizeContent(content);
+  const sentences = breakContentInSentences(sanitizedContent);
 
-  return { content, sanitizedContent };
+  return { content, sanitizedContent, sentences };
 };
 
 export default textRobot;
