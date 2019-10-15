@@ -1,11 +1,29 @@
 import { Command } from '@oclif/command';
 import * as inquirer from 'inquirer';
+
+interface Sentence {
+  text: string;
+  keywords: string[];
+  images: string[];
+}
+
+interface Content {
+  searchTerm: string;
+  prefix: string;
+  sourceContentOriginal: string;
+  sourceContentSanitized: string;
+  sentences: Sentence[];
+}
+
 export default class Create extends Command {
   public static description = 'Create a new video on Youtube';
 
-  private readonly content = {
+  private readonly content: Content = {
     searchTerm: '',
     prefix: '',
+    sourceContentOriginal: '',
+    sourceContentSanitized: '',
+    sentences: [],
   };
 
   public async run() {
