@@ -32,11 +32,12 @@ export default class Create extends Command {
     this.content.searchTerm = await this.askAndReturnSearchTerm();
     this.content.prefix = await this.askAndReturnPrefix();
 
-    const { content } = await textRobot({
+    const { content, sanitizedContent } = await textRobot({
       searchTerm: this.content.searchTerm,
       prefix: this.content.prefix
     });
     this.content.sourceContentOriginal = content;
+    this.content.sourceContentSanitized = sanitizedContent;
 
     this.log(JSON.stringify(this.content));
   }

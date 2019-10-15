@@ -38,9 +38,8 @@ const textRobot = async ({ searchTerm }: TextRobotParams) => {
 
   const content = await fetchContentFromWikipedia(searchTerm);
   const sanitizedContent = sanitizeContent(content);
-  // tslint:disable-next-line: no-console
-  console.log(sanitizedContent);
-  return { content };
+
+  return { content, sanitizedContent };
 };
 
 export default textRobot;
