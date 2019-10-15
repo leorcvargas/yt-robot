@@ -1,25 +1,47 @@
-import {Command, flags} from '@oclif/command'
-
+import { Command } from '@oclif/command';
+import * as inquirer from 'inquirer';
 export default class Create extends Command {
-  static description = 'describe the command here'
+  public static description = 'Create a new video on Youtube';
 
-  static flags = {
-    help: flags.help({char: 'h'}),
-    // flag with a value (-n, --name=VALUE)
-    name: flags.string({char: 'n', description: 'name to print'}),
-    // flag with no value (-f, --force)
-    force: flags.boolean({char: 'f'}),
+  private readonly content = {
+    searchTerm: '',
+    prefix: '',
+  };
+
+  public async run() {
+    this.content.searchTerm = await this.askAndReturnSearchTerm();
+    this.content.prefix = await this.askAndReturnPrefix();
+    this.log(JSON.stringify(this.content));
   }
 
-  static args = [{name: 'file'}]
+  private async askAndReturnSearchTerm() {
+    const { searchTerm } = await inquirer
+      .prompt<{ searchTerm: string }>([
+        {
+          type: 'input',
+          name: 'searchTerm',
+          message: 'Type a Wikipedia search term',
+        },
+      ]);
 
-  async run() {
-    const {args, flags} = this.parse(Create)
+    return searchTerm;
+  }
 
-    const name = flags.name || 'world'
-    this.log(`hello ${name} from /Users/leo/Projects/Personal/yt-robot/src/commands/create.ts`)
-    if (args.file && flags.force) {
-      this.log(`you input --force and --file: ${args.file}`)
-    }
+  private async askAndReturnPrefix() {
+    const { prefix } = await inquirer
+      .prompt<{ prefix: string }>([
+        {
+          type: 'list',
+          name: 'prefix',
+          message: 'Choose a prefix',
+          choices: [
+            { name: 'Who is', type: 'choice' },
+            { name: 'What is', type: 'choice' },
+            { name: 'The history of', type: 'choice' },
+          ],
+        },
+      ]);
+
+    return prefix;
   }
 }
