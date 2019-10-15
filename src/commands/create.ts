@@ -1,5 +1,6 @@
 import { Command } from '@oclif/command';
 import * as inquirer from 'inquirer';
+import textRobot from '../robots/text';
 
 interface Sentence {
   text: string;
@@ -29,7 +30,14 @@ export default class Create extends Command {
   public async run() {
     this.content.searchTerm = await this.askAndReturnSearchTerm();
     this.content.prefix = await this.askAndReturnPrefix();
-    this.log(JSON.stringify(this.content));
+
+    const { content } = await textRobot({
+      searchTerm: this.content.searchTerm,
+      prefix: this.content.prefix
+    });
+    this.content.sourceContentOriginal = content;
+
+    // this.log(JSON.stringify(this.content));
   }
 
   private async askAndReturnSearchTerm() {
