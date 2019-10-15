@@ -1,5 +1,6 @@
 import { Command } from '@oclif/command';
 import * as inquirer from 'inquirer';
+
 import textRobot from '../robots/text';
 
 interface Sentence {
@@ -37,7 +38,7 @@ export default class Create extends Command {
     });
     this.content.sourceContentOriginal = content;
 
-    // this.log(JSON.stringify(this.content));
+    this.log(JSON.stringify(this.content));
   }
 
   private async askAndReturnSearchTerm() {
